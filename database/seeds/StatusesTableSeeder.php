@@ -14,32 +14,54 @@ class StatusesTableSeeder extends Seeder
     {
         Status::create([
             'name' => 'درانتظار',
-            'next_status_id' => 2,
+            'parent_status_id' => 0,
+            'next_status_id' => 1,
             'role_id' => 2
         ]);
 
         Status::create([
             'name' => 'مشاهده توسط سوپروایزر',
-            'next_status_id' => 0,
+            'parent_status_id' => 1,
             'role_id' => 2
         ]);
 
         Status::create([
             'name' => 'تایید توسط سوپروایزر',
-            'next_status_id' => -1,
+            'parent_status_id' => 2,
+            'next_status_id' => 8,
             'role_id' => 2
         ]);
 
         Status::create([
             'name' => 'رد توسط سوپروایزر',
-            'next_status_id' => -1,
+            'parent_status_id' => 2,
+            'next_status_id' => 8,
             'role_id' => 2
         ]);
 
         Status::create([
             'name' => 'ارسال به مدیر',
-            'next_status_id' => 0,
+            'parent_status_id' => 2,
             'role_id' => 2
+        ]);
+
+        Status::create([
+            'name' => 'تایید توسط مدیر',
+            'parent_status_id' => 5,
+            'next_status_id' => 8,
+            'role_id' => 3
+        ]);
+
+        Status::create([
+            'name' => 'رد توسط مدیر',
+            'parent_status_id' => 5,
+            'next_status_id' => 8,
+            'role_id' => 3
+        ]);
+
+        Status::create([
+            'name' => 'اتمام فرایند',
+            'role_id' => 1
         ]);
     }
 }

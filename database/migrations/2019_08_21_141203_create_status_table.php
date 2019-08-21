@@ -16,7 +16,8 @@ class CreateStatusTable extends Migration
         Schema::create('statuses', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->unsignedInteger('next_status_id');
+            $table->unsignedInteger('parent_status_id')->default(0);
+            $table->unsignedInteger('next_status_id')->nullable();
             $table->unsignedInteger('role_id');
             $table->timestamps();
         });
