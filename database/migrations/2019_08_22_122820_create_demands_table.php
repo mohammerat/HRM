@@ -15,10 +15,21 @@ class CreateDemandsTable extends Migration
     {
         Schema::create('demands', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('user_id')->default(0);
+            $table->unsignedInteger('user_id');
             $table->text('message');
+            $table->unsignedInteger('status_id')->nullable();
             $table->string('subject');
             $table->timestamps();
+        });
+
+        Schema::table('demands', function(Blueprint $table) {
+            $table->foreign('status_id')
+                  ->references('id')->on('statuses')
+                  ->onDelete('cascade');
+
+            $table->foreign('user_id')
+                  ->references('id')->on('users')
+                  ->onDelete('cascade');
         });
     }
 
@@ -29,6 +40,9 @@ class CreateDemandsTable extends Migration
      */
     public function down()
     {
+        Schema::table('demands', function(Blueprint $table) {
+            $table->dropForeign(['status_id', 'user_id']);
+        });
         Schema::dropIfExists('demands');
     }
 }

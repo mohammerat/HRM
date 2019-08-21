@@ -13,14 +13,17 @@ class CreateSalaryTable extends Migration
      */
     public function up()
     {
-        Schema::create('salary', function (Blueprint $table) {
+        Schema::create('salaries', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('pay_amount');
             $table->float('insurance');
             $table->float('tax');
             $table->float('other');
-            $table->integer('user_level');
+            $table->unsignedInteger('role_id');
             $table->timestamps();
+            $table->foreign('role_id')
+                ->references('id')->on('roles')
+                ->onDelete('cascade');
         });
     }
 

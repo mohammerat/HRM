@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'firstname', 'lastname', 'personal_number', 'melli_code', 'birthdate', 'user_level', 'password',
     ];
 
     /**
@@ -27,7 +27,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'firstname', 'lastname', 'created_at', 'updated_at'
     ];
 
     /**
@@ -39,11 +39,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $appends = ['full_name'];
+    protected $appends = ['name'];
 
-    public function getFullNameAttribute()
+    public function getNameAttribute()
     {
-        return "{$this->first_name} {$this->last_name}";
+        return "{$this->firstname} {$this->lastname}";
     }
 
     public function setPasswordAttribute($value)
@@ -53,7 +53,7 @@ class User extends Authenticatable
 
     public function findForPassport($username)
     {
-        return $this->where('melli_code', $username)->first();
+        return $this->where('personal_number', $username)->first();
     }
 
     public function attendances()

@@ -15,4 +15,9 @@ class Demand extends Model
     {
         return $this->hasOne('App\Dismissal');
     }
+
+    public function status()
+    {
+        return $this->belongsTo('App\Status');
+    }
 }
