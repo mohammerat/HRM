@@ -1,6 +1,8 @@
 <?php
 
+use App\User;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class UsersTableSeeder extends Seeder
 {
@@ -24,7 +26,7 @@ class UsersTableSeeder extends Seeder
             'birthdate' => '1375-05-26',
             'password' => 'secret'
         ]);
-        $user->assignRole('manager');
+        $user->assignRole($manager);
 
         $user = User::create([
             'firstname' => $faker->firstNameMale,
@@ -34,7 +36,7 @@ class UsersTableSeeder extends Seeder
             'birthdate' => '1377-02-18',
             'password' => 'secret'
         ]);
-        $user->assignRole('supervisor');
+        $user->assignRole($supervisor);
 
         $user = User::create([
             'firstname' => $faker->firstNameFemale,
@@ -44,6 +46,6 @@ class UsersTableSeeder extends Seeder
             'birthdate' => '1375-01-06',
             'password' => 'secret'
         ]);
-        $user->assignRole('employee');
+        $user->assignRole($employee);
     }
 }
