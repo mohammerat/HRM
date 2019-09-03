@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSalaryTable extends Migration
+class CreateSalariesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -18,12 +18,12 @@ class CreateSalaryTable extends Migration
             $table->integer('pay_amount');
             $table->float('insurance');
             $table->float('tax');
+            $table->float('penalty');
+            $table->float('reward');
             $table->float('other');
             $table->unsignedInteger('role_id');
+            $table->unsignedBigInteger('work_hour_id');
             $table->timestamps();
-            $table->foreign('role_id')
-                ->references('id')->on('roles')
-                ->onDelete('cascade');
         });
     }
 

@@ -1,6 +1,8 @@
 <?php
 
 use App\User;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 Route::get('/createUser', function () {
     $faker = Faker\Factory::create();

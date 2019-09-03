@@ -17,6 +17,7 @@ class CreateDismissalHoursTable extends Migration
             $table->bigIncrements('id');
             $table->string('start_hour');
             $table->string('end_hour');
+            $table->unsignedBigInteger('demand_id');
             $table->timestamps();
         });
     }

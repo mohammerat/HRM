@@ -15,21 +15,27 @@ class CreateDemandsTable extends Migration
     {
         Schema::create('demands', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->text('message');
-            $table->unsignedInteger('status_id')->nullable();
+            $table->unsignedBigInteger('status_id')->nullable();
             $table->string('subject');
             $table->timestamps();
         });
 
-        Schema::table('demands', function(Blueprint $table) {
+        Schema::table('demands', function (Blueprint $table) {
             $table->foreign('status_id')
-                  ->references('id')->on('statuses')
-                  ->onDelete('cascade');
+                ->references('id')->on('statuses')
+                ->onDelete('cascade');
 
             $table->foreign('user_id')
-                  ->references('id')->on('users')
-                  ->onDelete('cascade');
+                ->references('id')->on('users')
+                ->onDelete('cascade');
+        });
+
+        Schema::table('dismissal_hours', function (Blueprint $table) {
+            $table->foreign('demand_id')
+                ->references('id')->on('demands')
+                ->onDelete('cascade');
         });
     }
 
@@ -40,7 +46,7 @@ class CreateDemandsTable extends Migration
      */
     public function down()
     {
-        Schema::table('demands', function(Blueprint $table) {
+        Schema::table('demands', function (Blueprint $table) {
             $table->dropForeign(['status_id', 'user_id']);
         });
         Schema::dropIfExists('demands');

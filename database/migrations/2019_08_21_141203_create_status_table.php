@@ -14,12 +14,14 @@ class CreateStatusTable extends Migration
     public function up()
     {
         Schema::create('statuses', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('name');
-            $table->unsignedInteger('parent_status_id')->default(0);
-            $table->unsignedInteger('next_status_id')->nullable();
+            $table->unsignedBigInteger('parent_status_id')->default(0);
+            $table->unsignedBigInteger('next_status_id')->nullable();
             $table->unsignedInteger('role_id');
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
 
         Schema::table('statuses', function (Blueprint $table) {

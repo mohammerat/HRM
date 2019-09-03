@@ -2,15 +2,14 @@
 
 namespace App;
 
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens, Notifiable, HasRoles;
+    use Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -30,30 +29,44 @@ class User extends Authenticatable
         'password', 'firstname', 'lastname', 'created_at', 'updated_at'
     ];
 
+    // protected $appends = ['name'];
+
+    protected $guard_name = 'api';
+
     /**
-     * The attributes that should be cast to native types.
+     * Get the identifier that will be stored in the subject claim of the JWT.
      *
-     * @var array
+     * @return mixed
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
-    protected $appends = ['name'];
-
-    public function getNameAttribute()
+    public function getJWTIdentifier()
     {
-        return "{$this->firstname} {$this->lastname}";
+        return $this->getKey();
     }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [
+            'id' => $this->id,
+            'firstname' => $this->firstname,
+            'lastname' => $this->lastname,
+            'personal_number' => $this->personal_number,
+            'role' => $this->roles->pluck('name')
+        ];
+    }
+
+    // public function getNameAttribute()
+    // {
+    //     return "{$this->firstname} {$this->lastname}";
+    // }
 
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
-    }
-
-    public function findForPassport($username)
-    {
-        return $this->where('personal_number', $username)->first();
     }
 
     public function attendances()

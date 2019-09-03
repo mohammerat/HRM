@@ -6,8 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dismissal extends Model
 {
+    protected $fillable = [
+        'id', 'start_hour', 'end_hour', 'demand_id'
+    ];
+
     public function demand()
     {
-        return $this->hasOne('App\Demand');
+        return $this->belongsTo('App\Demand', 'demand_id');
     }
 }

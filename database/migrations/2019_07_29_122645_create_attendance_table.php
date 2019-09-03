@@ -15,17 +15,17 @@ class CreateAttendanceTable extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('start_hour');
             $table->string('end_hour');
             $table->integer('works_mins')->default(0);
             $table->timestamps();
         });
 
-        Schema::table('attendances', function(Blueprint $table) {
+        Schema::table('attendances', function (Blueprint $table) {
             $table->foreign('user_id')
-                  ->references('id')->on('users')
-                  ->onDelete('cascade');
+                ->references('id')->on('users')
+                ->onDelete('cascade');
         });
     }
 
@@ -36,7 +36,7 @@ class CreateAttendanceTable extends Migration
      */
     public function down()
     {
-        Schema::table('attendances', function(Blueprint $table) {
+        Schema::table('attendances', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
         });
         Schema::dropIfExists('attendances');

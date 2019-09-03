@@ -18,7 +18,18 @@ class CreateWorkHoursTable extends Migration
             $table->string('start_hour');
             $table->string('end_hour');
             $table->integer('max_overtime_hour');
+            $table->integer('promotions_hour');
             $table->timestamps();
+        });
+
+        Schema::table('salaries', function (Blueprint $table) {
+            $table->foreign('role_id')
+                ->references('id')->on('roles')
+                ->onDelete('cascade');
+
+            $table->foreign('work_hour_id')
+                ->references('id')->on('work_hours')
+                ->onDelete('cascade');
         });
     }
 

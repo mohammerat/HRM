@@ -2,68 +2,82 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\User;
-use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct()
     {
-        $form_data = [
-            'grant_type' => 'password',
-            'client_id' => 2,
-            'client_secret' => 'nAlun5wExxKhop4aUgBDJJgJu2rmnzZiYnFiqRpE',
-            'username' => '5955612',
-            'password' => 'secret'
-        ];
+        $this->middleware('auth:api', ['except' => ['login']]);
+    }
 
-        $user = User::where('personal_number', '5955612')->first();
+    /**
+     * Get a JWT via given credentials.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function login()
+    {
+        $credentials = request(['personal_number', 'password']);
 
-        if ($user) {
-            if (\Hash::check('secret', $user->password)) {
-                $token = $user->createToken('Laravel Password Grant Client')->accessToken;
-                $response = ['token' => $token];
-                return response($response, 200);
-            } else {
-                $response = 'Password mismatch';
-                return response($response, 422);
-            }
-        } else {
-            $response = 'User doesn\'t exist';
-            return response($response, 422);
+        if (!$token = auth()->attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
+
+        return $this->respondWithToken($token);
     }
 
-    public function register(Request $request)
+    /**
+     * Get the authenticated User.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function me()
     {
-        $request->validate([
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'personal_number' => 'required|numeric',
-            'melli_code' => 'required|numeric',
-            'birthdate' => 'required',
-            'user_level' => 'required|in:2,3',
-            'password' => 'required|min:6'
-        ]);
-
-        return User::create([
-            'firstname' => $request->firstname,
-            'lastname' => $request->lastname,
-            'personal_number' => $request->personal_number,
-            'melli_code' => $request->melli_code,
-            'birthdate' => $request->birthdate,
-            'user_level' => $request->user_level,
-            'password' => $request->password
-        ]);
+        return response()->json(auth()->user());
     }
 
+    /**
+     * Log the user out (Invalidate the token).
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function logout()
     {
-        auth()->user()->tokens->each(function ($token, $key) {
-            $token->delete();
-        });
+        auth()->logout();
 
-        return response()->json('Logged out successfully.');
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
+    /**
+     * Refresh a token.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refresh()
+    {
+        return $this->respondWithToken(auth()->refresh());
+    }
+
+    /**
+     * Get the token array structure.
+     *
+     * @param  string $token
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60,
+        ]);
     }
 }

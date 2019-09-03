@@ -7,8 +7,11 @@ Route::middleware('api')->group(function () {
 
 Route::middleware('auth:api')->group(function () {
     Route::get('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('me', 'AuthController@me');
 
     # Users Route
+    Route::get('user', 'UsersController@info');
     Route::get('users', 'UsersController@show')->middleware('permission:read users');
     Route::get('users/{id}', 'UsersController@edit')->middleware('permission:read users');
     Route::post('users/create', 'UsersController@store')->middleware('permission:create user');
