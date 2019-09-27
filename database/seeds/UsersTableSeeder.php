@@ -13,38 +13,41 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker\Factory::create();
+        // $faker = \Faker\Factory::create();
         $manager = Role::find(1);
         $supervisor = Role::find(2);
         $employee = Role::find(3);
 
+        $melli_code = '1234567890';
         $user = User::create([
-            'firstname' => $faker->firstNameMale,
-            'lastname' => $faker->lastName,
-            'personal_number' => $faker->unique()->numerify('#######'),
-            'melli_code' => $faker->unique()->numerify('##########'),
+            'firstname' => 'Mohammad',
+            'lastname' => 'Saadat',
+            'personal_number' => '24680136',
+            'melli_code' => $melli_code,
             'birthdate' => '1375-05-26',
-            'password' => 'secret'
+            'password' => $melli_code
         ]);
         $user->assignRole($manager);
 
+        $melli_code = '1023456789';
         $user = User::create([
-            'firstname' => $faker->firstNameMale,
-            'lastname' => $faker->lastName,
-            'personal_number' => $faker->unique()->numerify('#######'),
-            'melli_code' => $faker->unique()->numerify('##########'),
+            'firstname' => 'Ali',
+            'lastname' => 'Zarei',
+            'personal_number' => '87676234',
+            'melli_code' => $melli_code,
             'birthdate' => '1377-02-18',
-            'password' => 'secret'
+            'password' => $melli_code
         ]);
         $user->assignRole($supervisor);
 
+        $melli_code = '4234987035';
         $user = User::create([
-            'firstname' => $faker->firstNameFemale,
-            'lastname' => $faker->lastName,
-            'personal_number' => $faker->unique()->numerify('#######'),
-            'melli_code' => $faker->unique()->numerify('##########'),
+            'firstname' => 'Maryam',
+            'lastname' => 'Mirasi',
+            'personal_number' => '56471408',
+            'melli_code' => $melli_code,
             'birthdate' => '1375-01-06',
-            'password' => 'secret'
+            'password' => $melli_code
         ]);
         $user->assignRole($employee);
     }

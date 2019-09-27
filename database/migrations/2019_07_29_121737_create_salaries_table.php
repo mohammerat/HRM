@@ -18,8 +18,6 @@ class CreateSalariesTable extends Migration
             $table->integer('pay_amount');
             $table->float('insurance');
             $table->float('tax');
-            $table->float('penalty');
-            $table->float('reward');
             $table->float('other');
             $table->unsignedInteger('role_id');
             $table->unsignedBigInteger('work_hour_id');

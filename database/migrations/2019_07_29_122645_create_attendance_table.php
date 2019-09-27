@@ -16,8 +16,8 @@ class CreateAttendanceTable extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->string('start_hour');
-            $table->string('end_hour');
+            $table->unsignedInteger('start_hour');
+            $table->unsignedInteger('end_hour')->default(0);
             $table->integer('works_mins')->default(0);
             $table->timestamps();
         });

@@ -15,7 +15,7 @@ class StatusesTableSeeder extends Seeder
         Status::create([
             'name' => 'درانتظار',
             'parent_status_id' => 0,
-            'next_status_id' => 1,
+            'next_status_id' => 2,
             'role_id' => 2
         ]);
 

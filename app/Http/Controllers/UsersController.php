@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class UsersController extends Controller
 {
@@ -36,6 +37,10 @@ class UsersController extends Controller
             'birthdate' => 'required|date_format:"Y/m/d"',
             'password' => 'required|alpha_num|min:6'
         ]);
+        $role_id = 3;
+        if (auth()->user()->hasRole('manager')) {
+            $role_id = 2;
+        }
 
         $user = User::create([
             'firstname' => $request->firstname,
@@ -45,6 +50,8 @@ class UsersController extends Controller
             'birthdate' => $request->birthdate,
             'password' => $request->password
         ]);
+
+        $user->assignRole(Role::findById($role_id)->name);
 
         return response($user);
     }
