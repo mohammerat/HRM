@@ -1,5 +1,6 @@
 <?php
 
+use App\Demand;
 use App\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
@@ -50,5 +51,12 @@ class UsersTableSeeder extends Seeder
             'password' => $melli_code
         ]);
         $user->assignRole($employee);
+
+        $demand = Demand::create([
+            'user_id' => 3,
+            'message' => 'یه درخواست',
+            'status_id' => 5,
+            'subject' => 'درخواست ارتقا شغلی'
+        ]);
     }
 }

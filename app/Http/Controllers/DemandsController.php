@@ -12,11 +12,11 @@ class DemandsController extends Controller
     public function index()
     {
         if (auth()->user()->hasRole('manager')) {
-            return response(Demand::whereIn('status_id', [5, 6, 7, 8])->get());
+            return response(Demand::whereIn('status_id', [5, 6, 7, 8])->with('status')->get());
         } else if (auth()->user()->hasRole('supervisor')) {
-            return response(Demand::whereIn('status_id', [1, 2, 3, 4, 5])->get());
+            return response(Demand::whereIn('status_id', [1, 2, 3, 4, 5])->with('status')->get());
         } else if (auth()->user()->hasRole('employee')) {
-            return response(Demand::where('user_id', auth()->user()->id)->get());
+            return response(Demand::where('user_id', auth()->user()->id)->with('status')->get());
         }
     }
 

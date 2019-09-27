@@ -4,7 +4,7 @@ use App\User;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-Route::get('/createUser', function () {
+/* Route::get('/createUser', function () {
     $faker = Faker\Factory::create();
     User::create([
         'firstname' => $faker->firstNameMale,
@@ -39,4 +39,4 @@ Route::get('/createUser', function () {
 
 Route::get('/', function () {
     return view('welcome');
-});
+}); */
