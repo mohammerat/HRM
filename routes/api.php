@@ -19,6 +19,8 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('users/{id}', 'UsersController@delete')->middleware('permission:delete user');
 
     # Rule CRUD Routes
+    Route::get('rules', 'WorkHoursController@index')->middleware('role_or_permission:manager|supervisor|employee');
+
     Route::post('work_hours', 'WorkHoursController@store')->middleware('permission:create work hour');
     Route::put('work_hours', 'WorkHoursController@store')->middleware('permission:create work hour');
 

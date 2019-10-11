@@ -28,7 +28,7 @@ class SalaryController extends Controller
             'reward'       => $request->reward,
             'other'        => $request->reward,
             'role_id'      => $request->role_id,
-            'work_hour_id' => $request->work_hour_id
+            'work_hour_id' => $request->work_hour_id // get last work hour id
         ]);
 
         return response()->json($salary);

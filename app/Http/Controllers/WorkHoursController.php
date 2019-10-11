@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Salary;
 use App\WorkHour;
 use Illuminate\Http\Request;
 
 class WorkHoursController extends Controller
 {
+    public function index(Request $request)
+    {
+        $salary = Salary::orderBy('id', 'DESC')->first();
+        if ($salary)
+            return response($salary->with(['workHour'])->get());
+        else
+            return response('No Salary in Database', 503);
+    }
+
     public function store(Request $request)
     {
         $request->validate([
