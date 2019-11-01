@@ -66,7 +66,7 @@ class UsersController extends Controller
             'birthdate' => 'required|date_format:"Y/m/d"',
         ];
         if ($request->password) {
-            $validation_rules['password'] = 'required|alpha_num|confirmed|min:6';
+            $validation_rules['password'] = 'required|alpha_num|min:6';
         }
         $request->validate($validation_rules);
 
