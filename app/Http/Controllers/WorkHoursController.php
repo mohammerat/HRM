@@ -10,9 +10,9 @@ class WorkHoursController extends Controller
 {
     public function index(Request $request)
     {
-        $salary = Salary::orderBy('id', 'DESC')->first();
+        $salary = Salary::with(['workHour'])->orderBy('id', 'DESC')->first();
         if ($salary)
-            return response($salary->with(['workHour'])->get());
+            return response($salary);
         else
             return response('No Salary in Database', 503);
     }
