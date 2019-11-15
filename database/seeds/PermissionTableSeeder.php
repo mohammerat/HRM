@@ -21,6 +21,11 @@ class PermissionTableSeeder extends Seeder
         $permission->syncRoles($supervisor_role);
 
         $permission = Permission::create([
+            'name' => 'create user'
+        ]);
+        $permission->syncRoles($supervisor_role);
+
+        $permission = Permission::create([
             'name' => 'create dismissal'
         ]);
         $permission->syncRoles($roles);
