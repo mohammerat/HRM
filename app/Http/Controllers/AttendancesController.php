@@ -14,7 +14,7 @@ class AttendancesController extends Controller
     {
         if ($request->type == 'present') {
             $last_attendance = Attendance::whereHas('user', function ($query) use ($request) {
-                $query->where('id', $request->user_id);
+                $query->where('id', auth()->user()->id);
             })->orderBy('id', 'desc')->first();
 
             if ($last_attendance && $last_attendance->end_hour == '') {
@@ -22,13 +22,13 @@ class AttendancesController extends Controller
             }
 
             $attendance = Attendance::create([
-                'user_id' => $request->user_id,
+                'user_id' => auth()->user()->id,
                 'start_hour' => strtotime('now'),
             ]);
 
             return response('ورود با موفقیت ثبت شد');
         } else if ($request->type == 'absent') {
-            $last_attendance = Attendance::where('user_id', $request->user_id)->orderBy('id', 'desc')->first();
+            $last_attendance = Attendance::where('user_id', auth()->user()->id)->orderBy('id', 'desc')->first();
 
             if ($last_attendance && $last_attendance->end_hour != '') {
                 return response('شما مجاز به خروج مجدد نیستید.', 403);
@@ -43,7 +43,7 @@ class AttendancesController extends Controller
             $last_attendance->works_mins = ($last_attendance->end_hour - $last_attendance->start_hour) / 60;
             $last_attendance->save();
 
-            $this->isPromoted($request->user_id);
+            $this->isPromoted(auth()->user()->id);
 
             return response('خروج با موفقیت ثبت شد');
         }
