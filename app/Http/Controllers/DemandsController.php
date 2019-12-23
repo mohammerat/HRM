@@ -74,9 +74,8 @@ class DemandsController extends Controller
         if (auth()->user()->hasRole('supervisor') && $demand->status_id == 1) {
             $demand->status_id = 2;
             $demand->save();
-        } else {
-            return response('دسترسی شما مجاز نیست', 401);
         }
+        return response(Demand::with(['user', 'status', 'dismissal'])->where('id', $id)->first());
     }
 
     public function create_dismissal(Request $request)
