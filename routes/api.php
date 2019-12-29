@@ -33,7 +33,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('demands/create', 'DemandsController@create')->middleware('permission:create demand');
     Route::post('demands/{id}', 'DemandsController@update')->middleware('permission:update demand');
-    Route::get('demands/{id}', 'DemandsController@demand_visit_by_supervisor')->middleware('permission:update demand');
+    Route::get('demands/{id}', 'DemandsController@demand_visit_by_supervisor');
 
     Route::post('dismissal/create', 'DemandsController@create_dismissal')->middleware('permission:create dismissal');
     Route::post('dismissal/{id}', 'DemandsController@update_dismissal')->middleware('permission:update dismissal');
