@@ -41,12 +41,12 @@ class DemandsController extends Controller
     {
         $request->validate([
             'message' => 'required|string',
-            'status_id' => 'required|min:1|integer',
+            // 'status_id' => 'required|min:1|integer',
             'subject' => 'required|string',
         ]);
 
         $demand = Demand::find($id);
-        $demand->update($request->only(['message', 'status_id', 'subject']));
+        // $demand->update($request->only(['message', 'status_id', 'subject']));
 
         if (auth()->user()->hasAnyRole(['manager', 'supervisor'])) {
             $this->change_demand_level($request->type, $demand);
@@ -59,8 +59,8 @@ class DemandsController extends Controller
     {
         $current_demand_status = Status::find($demand->status_id);
         if ($change_type == 'APPROVAL') {
-            if ($demand->status_id != 2 && $demand->status_id != 5)
-                $demand->status_id = $current_demand_status->next_status_id;
+            // if ($demand->status_id != 2 && $demand->status_id != 5)
+            $demand->status_id = $current_demand_status->next_status_id;
         } else if ($change_type == 'REJECT') {
             $demand->status_id = 8;
         }
@@ -71,10 +71,10 @@ class DemandsController extends Controller
     public function demand_visit_by_supervisor($id)
     {
         $demand = Demand::find($id);
-        if (auth()->user()->hasRole('supervisor') && $demand->status_id == 1) {
-            $demand->status_id = 2;
-            $demand->save();
-        }
+        // if (auth()->user()->hasRole('supervisor') && $demand->status_id == 1) {
+        //     $demand->status_id = 2;
+        //     $demand->save();
+        // }
         return response(Demand::with(['user', 'status', 'dismissal'])->where('id', $id)->first());
     }
 
@@ -127,8 +127,8 @@ class DemandsController extends Controller
     {
         $demand = Dismissal::find($id)->demand()->first();
         if (auth()->user()->hasRole('supervisor') && $demand->status_id == 1) {
-            $demand->status_id = 2;
-            $demand->save();
+            // $demand->status_id = 2;
+            // $demand->save();
             return response($demand);
         } else {
             return response('دسترسی شما مجاز نیست', 401);
