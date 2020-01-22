@@ -80,7 +80,7 @@ class DemandsController extends Controller
         // $demand->update($request->only(['message', 'status_id', 'subject']));
 
         if (auth()->user()->hasAnyRole(['supervisor'])) {
-            $demand->status_id = 8;
+            $demand->status_id = 5;
             $demand->save();
         }
 
