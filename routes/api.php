@@ -33,6 +33,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('demands/create', 'DemandsController@create')->middleware('permission:create demand');
     Route::post('demands/{id}', 'DemandsController@update')->middleware('role_or_permission:update demand|manager');
+    Route::post('demands/{id}/send_to_manager', 'DemandsController@sent_to_manager')->middleware('role_or_permission:supervisor');
     Route::get('demands/{id}', 'DemandsController@demand_visit_by_supervisor');
 
     Route::post('dismissal/create', 'DemandsController@create_dismissal')->middleware('permission:create dismissal');

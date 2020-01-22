@@ -68,6 +68,25 @@ class DemandsController extends Controller
         $demand->save();
     }
 
+    public function sent_to_manager($id, Request $request)
+    {
+        $request->validate([
+            'message' => 'required|string',
+            // 'status_id' => 'required|min:1|integer',
+            'subject' => 'required|string',
+        ]);
+
+        $demand = Demand::find($id);
+        // $demand->update($request->only(['message', 'status_id', 'subject']));
+
+        if (auth()->user()->hasAnyRole(['supervisor'])) {
+            $demand->status_id = 8;
+            $demand->save();
+        }
+
+        return response($demand);
+    }
+
     public function demand_visit_by_supervisor($id)
     {
         $demand = Demand::find($id);
